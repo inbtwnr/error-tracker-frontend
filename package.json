@@ -12,9 +12,11 @@
     "@formkit/vue": "^1.0.0-beta.12",
     "axios": "^1.2.0",
     "core-js": "^3.8.3",
+    "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "flowbite": "^1.5.4",
     "pinia": "^2.0.26",
+    "rtf.js": "^3.0.9",
     "vue": "^3.2.13",
     "vue-router": "^4.1.6"
   },

@@ -8,7 +8,7 @@ export const register = async (data) => {
     );
     return register;
   } catch (err) {
-    console.log(err);
+    err.r;
   }
 };
 

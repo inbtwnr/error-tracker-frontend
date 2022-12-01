@@ -6,11 +6,21 @@ axios.defaults.headers.common["Authorization"] = token;
 
 export const getErrors = async (id) => {
   try {
-    const errors = await axios.get(
-      `https://error-tracker-api.herokuapp.com/api/project/errors/?id=${id}`
-    );
+    return await axios
+      .get(`https://error-tracker-api.herokuapp.com/api/project/errors/${id}`)
+      .then((response) => response);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-    return errors;
+export const getName = async (name) => {
+  try {
+    return await axios
+      .get(
+        `https://error-tracker-api.herokuapp.com/api/project/errors/user/${name}`
+      )
+      .then((response) => response);
   } catch (err) {
     console.log(err);
   }

@@ -1,6 +1,6 @@
 // @ts-check
 import { login, register } from "@/api/auth";
-import { getErrors } from "@/api/dashboard";
+import { getErrors, getName } from "@/api/dashboard";
 import { defineStore } from "pinia";
 import { getToken, setToken, removeToken, setId, removeId } from "@/utils/auth";
 
@@ -10,6 +10,7 @@ const initialState = {
   token: persistToken,
   id: "",
   errors: [],
+  name: "",
   isLoggedIn: Boolean(persistToken),
 };
 
@@ -19,16 +20,16 @@ export const useAppStore = defineStore({
   getters: {
     getUser: (state) => state.id,
     getErrors: (state) => state.errors,
+    getName: (state) => state.name,
   },
   actions: {
-    login({ email, password }) {
+    async login({ email, password }) {
       removeToken();
-      login({
+      return await login({
         email,
         password,
       })
         .then((response) => {
-          console.log(response.data);
           const { token = null, id } = response.data;
           this.token = token;
           this.id = id;
@@ -40,8 +41,8 @@ export const useAppStore = defineStore({
           throw error;
         });
     },
-    register({ username, email, password }) {
-      register({
+    async register({ username, email, password }) {
+      await register({
         name: username,
         email: email,
         password,
@@ -55,10 +56,10 @@ export const useAppStore = defineStore({
           throw error;
         });
     },
-    loadErrors({ id }) {
-      getErrors(id)
+    async loadErrors(id) {
+      await getErrors(id)
         .then((response) => {
-          const errors = response.data;
+          const errors = response.data.data;
           this.errors = errors;
           return response;
         })
@@ -68,8 +69,20 @@ export const useAppStore = defineStore({
     },
     logout() {
       Object.assign(this, initialState);
+
       removeId();
       removeToken();
+    },
+    loadName(name) {
+      getName(name)
+        .then((response) => {
+          const name = response.data;
+          this.name = name.data;
+          return response;
+        })
+        .catch((error) => {
+          throw error;
+        });
     },
   },
 });
